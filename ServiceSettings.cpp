@@ -129,13 +129,13 @@ bool ServiceSettings::initialize()
 //*/
 
 	std::string ServiceSettings::wsdlPath = "/users3/virginijus/www/Damis/apache/htdocs/Damis.wsdl";
-	
-	std::string ServiceSettings::pathToAlgorithmsExe = "/scratch/lustre/home/virginijus/exec/Algorithms/";
-	
-	std::string ServiceSettings::localDataFileSavePath = "/scratch/lustre/home/virginijus/data/";
 
-	std::string ServiceSettings::logingConfFilePath = "/scratch/lustre/home/virginijus/exec/DamisService/Logging.conf";
-	
+	std::string ServiceSettings::pathToAlgorithmsExe = "/scratch/lustre/home/virginijus/exec/Algorithms/";
+
+	std::string ServiceSettings::localDataFileSavePath = "/home/tgriusys/QualityProject/DAMIS Webservice/bin/Output/";
+
+	std::string ServiceSettings::logingConfFilePath = "/home/tgriusys/QualityProject/DAMIS Webservice/bin/Release/Logging.conf";
+
 	std::string ServiceSettings::httpDataFileSavePath = "http://damis.lt:8087/data/";
 
 	std::string ServiceSettings::dataFileExtension = ".arff";

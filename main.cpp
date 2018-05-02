@@ -43,11 +43,11 @@ int main()
 
     easyloggingpp::Configurations conf(ServiceSettings::logingConfFilePath);
     // Reconfigure single logger
-    easyloggingpp::Loggers::reconfigureAllLoggers(conf);
+    //easyloggingpp::Loggers::reconfigureAllLoggers(conf);
 
     // LOG(INFO) << "Invoking service operation";
 
-    /*InitDamisService *dFile = new InitDamisService("http://158.129.140.134:8087/damis/data/err/_forCalculus_vmNddeGiVIkqQKOxGmTF.arff", "_input_"); //if clen data -> pass validateFile = false
+    /*InitDamisService *dFile = new InitDamisService("file:///home/damis/data/err/_forCalculus_vmNddeGiVIkqQKOxGmTF.arff", "_input_"); //if clen data -> pass validateFile = false
 
     if (!ErrorResponse::isFaultFound()) //remove error checking if clean data is called
     {
