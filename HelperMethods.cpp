@@ -45,7 +45,7 @@ int tmpIndex = -1, attIndex = 0;
 
 std::ifstream file (statFile);
 
-if (file.is_open() != false)
+if (file.is_open())
     {
         while (std::getline(file, line_from_file))
         {
@@ -67,10 +67,8 @@ if (file.is_open() != false)
                 {
                     tmpIndex ++;
                     iss >> tmp1;
-                    //iss >> tmp2;
 
                     std::transform(tmp1.begin(), tmp1.end(), tmp1.begin(), ::toupper);
-                   // std::transform(tmp2.begin(), tmp2.end(), tmp2.begin(), ::toupper);
                     if (tmp1 == attribute)
                     {
                         attIndex = tmpIndex;
@@ -93,9 +91,8 @@ if (file.is_open() != false)
                 }
             }
         }
-      //  file.close();
+        file.close();
     }
-    file.close();
 return retVal;
 }
 
@@ -151,13 +148,10 @@ int HelperMethods::deleteOldFiles()
 
     if ((dir = opendir (ServiceSettings::localDataFileSavePath.c_str())) != NULL)
     {
-        /* get all the files and directories within directory */
         while ((ent = readdir (dir)) != NULL)
         {
             fPath = ServiceSettings::localDataFileSavePath + ent->d_name;
-            stat(fPath.c_str(), &attrib);         // get the attributes of a file
-
-            //if it is not directory and time has ellapsed DELETE FILE
+            stat(fPath.c_str(), &attrib);
             if ((attrib.st_mode & S_IFMT) != S_IFDIR && difftime(nowTime, attrib.st_mtime) > ServiceSettings::keepFilesInDirectory)
             {
                 fileCount++;
@@ -172,7 +166,6 @@ int HelperMethods::deleteOldFiles()
     }
     else
     {
-        /* could not open directory */
         LOG(WARNING) << "Unable to open file storage directory " << ServiceSettings::localDataFileSavePath;
     }
 
@@ -258,13 +251,9 @@ char **HelperMethods::getcgivars(){
     request_method= getenv("REQUEST_METHOD");
     if (request_method == NULL)
         return NULL;
-    /*char *qs ;
-    qs= getenv("QUERY_STRING") ;*/
 
     if (!strcmp(request_method, "GET") || !strcmp(request_method, "HEAD") )
     {
-        /* Some servers apparently don't provide QUERY_STRING if it's empty, */
-        /*   so avoid strdup()'ing a NULL pointer here.                      */
         char *qs ;
         qs= getenv("QUERY_STRING") ;
         cgiinput= HelperMethods::strdup(qs  ? qs  : "") ;
@@ -276,28 +265,24 @@ char **HelperMethods::getcgivars(){
         {
             printf("Content-Type: text/plain\n\n") ;
             printf("getcgivars(): Unsupported Content-Type.\n") ;
-            //    exit(1) ;
             return NULL;
         }
         if ( !(content_length = atoi(getenv("CONTENT_LENGTH"))) )
         {
             printf("Content-Type: text/plain\n\n") ;
             printf("getcgivars(): No Content-Length was sent with the POST request.\n") ;
-            // exit(1) ;
             return NULL;
         }
         if ( !(cgiinput= (char *) malloc(content_length+1)) )
         {
             printf("Content-Type: text/plain\n\n") ;
             printf("getcgivars(): Couldn't malloc for cgiinput.\n") ;
-            //  exit(1) ;
             return NULL;
         }
         if (!fread(cgiinput, content_length, 1, stdin))
         {
             printf("Content-Type: text/plain\n\n") ;
             printf("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
-            // exit(1) ;
             return NULL;
         }
         cgiinput[content_length]='\0' ;
@@ -324,7 +309,7 @@ char **HelperMethods::getcgivars(){
             pairlist= (char **) realloc(pairlist,(paircount+256)*sizeof(char **)) ;
         nvpair= strtok(NULL, "&;") ;
     }
-    pairlist[paircount]= 0 ;    /* terminate the list with NULL */
+    pairlist[paircount]= 0 ;
 
     /** Then, from the list of pairs, extract the names and values. **/
     cgivars= (char **) malloc((paircount*2+1)*sizeof(char **)) ;
@@ -341,7 +326,7 @@ char **HelperMethods::getcgivars(){
         }
         HelperMethods::unescape_url(cgivars[i*2]= strdup(pairlist[i])) ;
     }
-    cgivars[paircount*2]= 0 ;   /* terminate the list with NULL */
+    cgivars[paircount*2]= 0 ;
 
     /** Free anything that needs to be freed. **/
     free(cgiinput) ;
@@ -416,7 +401,6 @@ int HelperMethods::strToInt(std::string cmdParam)
     }
 }
 
-// copy in binary mode
 bool HelperMethods::copyFile(const char *SRC, const char* DEST)
 {
     std::ifstream src(SRC, std::ios::binary);
